@@ -54,8 +54,8 @@ class PanopticPreprocessing:
                     continue
 
                 # Add non-intersecting part to output
-                msk_i = msk_i - intersection
-                msk[msk_i] = len(cat)
+                msk_i = msk_i & ~intersection
+                msk[msk_i.bool()] = len(cat)
                 cat.append(cls_i.item() + num_stuff)
                 obj.append(obj_i.item())
                 iscrowd.append(0)
@@ -75,7 +75,7 @@ class PanopticPreprocessing:
                 continue
 
             # Add non-intersecting part to output
-            msk[msk_i] = len(cat)
+            msk[msk_i.bool()] = len(cat)
             cat.append(cls_i)
             obj.append(1)
             iscrowd.append(cls_i >= num_stuff)
